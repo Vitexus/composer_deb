@@ -7,7 +7,7 @@ Version: {{ VERSION }}
 Section: php
 Installed-Size: 9216
 Architecture: all
-Depends: php5|php7.0|php7.1,git,php5-curl|php7.0-curl|php7.1-curl|php-curl
+Depends: php5|php7.0|php7.1,git,php5-curl|php7.0-curl|php7.1-curl|php7.2-curl|php-curl,php-zip|php5-zip|php7.0-zip|php7.1-zip|php7.2-zip
 Description: Dependency Manager for PHP.
  Composer is a tool for dependency management in PHP. It allows you to declare
  the dependent libraries your project needs and it will install them in your

@@ -1,4 +1,4 @@
-COMPOSER_VERSION ?= 1.0.0-alpha11
+COMPOSER_VERSION ?= 1.6.5
 
 default: composer package
 
