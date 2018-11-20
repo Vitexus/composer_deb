@@ -1,4 +1,7 @@
-COMPOSER_VERSION ?= 1.0.0-alpha11
+COMPOSER_VERSION ?= `curl -s https://getcomposer.org/ | awk -F'class="|"' '/class/ && /'"latest"'/  {print $4}' | sed 's/<[^>]*>//g' | awk '{print $$2}' | sed 's/v//g'`
+
+latest:
+	curl -s https://getcomposer.org/ | awk -F'class="|"' '/class/ && /'"latest"'/  {print $4}' | sed 's/<[^>]*>//g' | awk '{print $$2}' | sed 's/v//g'
 
 default: composer package
 
@@ -8,7 +11,7 @@ composer: clean
 	@cp composer.phar debian/usr/bin/composer
 
 package:
-	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)/g" debian/DEBIAN/control.default > debian/DEBIAN/control
+	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)-4/g" debian/DEBIAN/control.default > debian/DEBIAN/control
 	@fakeroot make finish
 
 finish:
