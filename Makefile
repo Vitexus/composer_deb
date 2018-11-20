@@ -1,8 +1,5 @@
 COMPOSER_VERSION ?= `curl -s https://getcomposer.org/ | awk -F'class="|"' '/class/ && /'"latest"'/  {print $4}' | sed 's/<[^>]*>//g' | awk '{print $$2}' | sed 's/v//g'`
 
-latest:
-	curl -s https://getcomposer.org/ | awk -F'class="|"' '/class/ && /'"latest"'/  {print $4}' | sed 's/<[^>]*>//g' | awk '{print $$2}' | sed 's/v//g'
-
 default: composer package
 
 composer: clean
