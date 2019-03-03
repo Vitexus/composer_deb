@@ -8,8 +8,14 @@ composer: clean
 	@cp composer.phar debian/usr/bin/composer
 
 package:
-	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)-4/g" debian/DEBIAN/control.default > debian/DEBIAN/control
+	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)-2/g" debian/DEBIAN/control.default > debian/DEBIAN/control
+	cp debian/postinst debian/DEBIAN/
+	chmod 755 debian/DEBIAN/postinst
 	@fakeroot make finish
+
+deb:
+	dch -v $(COMPOSER_VERSION)
+	dpkg-buildpackage -A -us -uc
 
 finish:
 	@chown -R root:root debian

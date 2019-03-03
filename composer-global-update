@@ -1,0 +1,33 @@
+#!/bin/sh
+
+UPDATEONLY=$1
+
+case "$1" in
+    "")
+
+	ls /usr/share/*/composer.json /usr/lib/*/composer.json  | while read project; do
+	    PROJECTDIR=$(dirname $project)
+	    echo Updating optimized `basename $PROJECTDIR`
+	    composer -n -o --no-dev update -d $PROJECTDIR
+	done
+
+
+    ;;
+
+    -h)
+
+        echo $0 depname - update only projects requiring given dependency 
+
+    ;;
+
+    *)
+	egrep -ilr --include=composer.json "$1" /usr/share/*/composer.json /usr/lib/*/composer.json  | while read project; do
+	    PROJECTDIR=$(dirname $project)
+	    echo Updating optimized `basename $PROJECTDIR` requiring $1
+	    composer -n -o --no-dev update -d $PROJECTDIR
+	done
+
+    ;;
+esac
+
+
