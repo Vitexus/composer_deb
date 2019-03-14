@@ -48,7 +48,10 @@ reloadwebserver() {
 case "$1" in
     configure)
 
+    mkdir -p /var/lib/composer/
+    chown www-data:www-data /var/lib/composer/ -Rv
     composer-global-update
+    
 
     reloadwebserver
 
