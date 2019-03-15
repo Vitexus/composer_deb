@@ -6,9 +6,10 @@ composer: clean
 	@curl -sS https://getcomposer.org/installer | php -- --version=$(COMPOSER_VERSION)$
 	@mkdir -p debian/usr/bin
 	@cp composer.phar debian/usr/bin/composer
+	@cp composer-global-update debian/usr/bin/composer-global-update
 
 package:
-	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)-2/g" debian/DEBIAN/control.default > debian/DEBIAN/control
+	@sed "s/{{ VERSION }}/$(COMPOSER_VERSION)-3/g" debian/DEBIAN/control.default > debian/DEBIAN/control
 	cp debian/postinst debian/DEBIAN/
 	chmod 755 debian/DEBIAN/postinst
 	@fakeroot make finish
