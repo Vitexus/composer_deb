@@ -1,0 +1,11 @@
+Template: composer/UPDATE_APPS
+Type: boolean
+Default: false
+Description: Update applications with new composer
+ Find all /usr/share/*/composer.json + /usr/lib/*/composer.json and perform updates ?
+
+Template: composer/WEB_USER
+Type: string
+Default: www-data
+Description: Chown system-wide composer files
+ Chown all in  /var/lib/composer/  to given user ?

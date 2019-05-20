@@ -17,6 +17,8 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+# Source debconf library.
+. /usr/share/debconf/confmodule
 
 reloadwebserver() {
         if [ -f /etc/init.d/nginx ] ; then
@@ -49,11 +51,14 @@ case "$1" in
     configure)
 
     mkdir -p /var/lib/composer/
-    chown www-data:www-data /var/lib/composer/ -Rv
-    composer-global-update
-    
+    db_get composer/WEB_USER
+    chown $RET:$RET /var/lib/composer/ -Rv
 
-    reloadwebserver
+    db_get composer/UPDATE_APPS
+    if [ "$RET" = "true" ]; then
+	composer-global-update
+        reloadwebserver
+    fi
 
     ;;
 
