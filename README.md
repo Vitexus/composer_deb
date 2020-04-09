@@ -30,8 +30,7 @@ echo "deb http://repo.vitexsoftware.cz $(lsb_release -sc) backports" | sudo tee 
 sudo wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.cz/keyring.gpg
 sudo apt update
 sudo apt install composer
-        
-
+```
 
 
 About
