@@ -7,36 +7,34 @@ Builds a [Debian](http://debian.org) package to install and run [Composer](http:
 Usage
 -----
 
-The first thing you must do is assemble Composer:
+The first thing you must build package:
 ``` bash
- $ make composer
-```
-
-Now that Composer is available, we can build the package:
-``` bash
- $ make package
+ $ ./build.sh
 ```
 
 This will create our Debian package, which we can now interact with:
 ``` bash
-$ ln *.deb
-composer_1.0.0-alpha11_all.deb
-$ sudo dpkg --install composer_1.0.0-alpha11_all.deb
+$ ln ../*.deb
+composer_1.10.4_all.deb
+$ sudo dpkg --install composer_1.10.4_all.deb
 ```
 
-If you want to use a different version of Composer you can override the `COMPOSER_VERSION` variable:
-``` bash
-$ COMPOSER_VERSION=1.0.0-alpha9 make composer
-$ COMPOSER_VERSION=1.0.0-alpha9 make package
-```
+Repository
+----------
 
-Development
------------
+You can also install from our repository
 
-When changing the default target Composer version, make sure to update:
-* Makefile
+``` shell
+sudo apt install lsb-release wget
+echo "deb http://repo.vitexsoftware.cz $(lsb_release -sc) backports" | sudo tee /etc/apt/sources.list.d/vitexsoftware-backports.list
+sudo wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.cz/keyring.gpg
+sudo apt update
+sudo apt install composer
+        
+
+
 
 About
 -----
-* Author: [Rob Loach](http://robloach.net)
-* Source: [composer.deb](http://github.com/RobLoach/composer.deb)
+* Original Author: [Rob Loach](http://robloach.net)
+* Original Source: [composer.deb](http://github.com/RobLoach/composer.deb)
