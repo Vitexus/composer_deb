@@ -1,0 +1,12 @@
+composer (1.10.4) UNRELEASED; urgency=medium
+
+  * LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    in path symlinking with absolute path repos
+
+ -- root <root@exiv.jinonice.czf>  Thu, 09 Apr 2020 23:37:26 +0200
+
+composer (1.0) EXPERIMENTAL; urgency=medium
+
+  * Initial release.
+
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Thu, 09 Apr 2020 23:04:40 +0200

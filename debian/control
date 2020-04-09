@@ -1,13 +1,13 @@
 Source: composer
 Priority: extra
 Maintainer: Rob Loach <robloach@gmail.com>
-Homepage: http://getcomposer.org
+Homepage: https://github.com/Vitexus/composer_deb
+Build-Depends: jq, php-cli, curl
+
 Package: composer
-Version: {{ VERSION }}
 Section: php
-Installed-Size: 9216
 Architecture: all
-Depends: php5|php5.6|php7.0|php7.1|php7.2|php7.3,git,php5-curl|php7.0-curl|php7.1-curl|php7.2-curl|php7.3-curl|php-curl,php-zip|php5-zip|php7.0-zip|php7.1-zip|php7.2-zip|php7.3-zip
+Depends: php-cli,git,php-curl,php-zip
 Description: Dependency Manager for PHP.
  Composer is a tool for dependency management in PHP. It allows you to declare
  the dependent libraries your project needs and it will install them in your

@@ -1,4 +1,4 @@
-composer.phar
-*.deb
-debian/usr
-debian/DEBIAN/control
+composer
+debian/.debhelper/
+debian/composer/
+

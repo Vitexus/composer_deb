@@ -1,0 +1,13 @@
+Package: composer
+Version: 1.10.4
+Architecture: all
+Maintainer: Rob Loach <robloach@gmail.com>
+Installed-Size: 1937
+Depends: php-cli, git, php-curl, php-zip
+Section: php
+Priority: extra
+Homepage: https://github.com/Vitexus/composer_deb
+Description: Dependency Manager for PHP.
+ Composer is a tool for dependency management in PHP. It allows you to declare
+ the dependent libraries your project needs and it will install them in your
+ project for you.
