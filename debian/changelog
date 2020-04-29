@@ -1,9 +1,49 @@
-composer (1.10.4) UNRELEASED; urgency=medium
+composer (1.10.5) UNRELEASED; urgency=medium
 
   * LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
     in path symlinking with absolute path repos
+  * LICENSE README.md build.sh composer debian Fixed self-update on PHP
+    <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian tmp Fixed self-update on
+    PHP <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian tmp Fixed 1.10.2
+    regression with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian Fixed self-update on PHP
+    <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian tmp Fixed self-update on
+    PHP <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian tmp Fixed 1.10.2
+    regression with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian Fixed self-update on PHP
+    <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian Fixed self-update on PHP
+    <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian tmp Fixed self-update on
+    PHP <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian tmp Fixed 1.10.2
+    regression with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian tmp Fixed self-update on
+    PHP <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian tmp Fixed 1.10.2
+    regression with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian Fixed self-update on PHP
+    <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
+    with PATH resolution in scripts
+  * LICENSE README.md build.sh composer debian tmp Fixed self-update on
+    PHP <5.6, seriously please upgrade people, it's time
+    LICENSE README.md build.sh composer debian tmp Fixed 1.10.2
+    regression with PATH resolution in scripts
 
- -- root <root@exiv.jinonice.czf>  Thu, 09 Apr 2020 23:37:26 +0200
+ -- root <root@exiv.jinonice.czf>  Wed, 29 Apr 2020 17:41:06 +0200
 
 composer (1.0) EXPERIMENTAL; urgency=medium
 

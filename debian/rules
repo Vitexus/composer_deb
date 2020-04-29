@@ -9,4 +9,11 @@ override_dh_prep:
 	dh_prep
 
 override_dh_install:
+	rm -rf tmp
+	git clone https://github.com/composer/composer.git tmp
+	cd tmp ; git checkout tags/`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'` ; cd ..
+	mkdir -p debian/composer/usr/share/php/
+	mv tmp/src/Composer debian/composer/usr/share/php/
+	rm -rf tmp
 	dh_install
+

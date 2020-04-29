@@ -1,8 +1,8 @@
 Package: composer
-Version: 1.10.4
+Version: 1.10.5
 Architecture: all
 Maintainer: Rob Loach <robloach@gmail.com>
-Installed-Size: 1937
+Installed-Size: 3678
 Depends: php-cli, git, php-curl, php-zip
 Section: php
 Priority: extra
