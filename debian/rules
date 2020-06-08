@@ -5,7 +5,7 @@
 
 override_dh_prep:
 	debian/downloader
-	dch -b -v `./composer --version | awk '{print $$3}'` --package composer `curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'`
+	dch -b -v `./composer --version | awk '{print $$3}'` --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
 	dh_prep
 
 override_dh_install:

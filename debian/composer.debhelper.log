@@ -1,18 +1,1 @@
-dh_update_autotools_config
-override_dh_prep dh_prep
-dh_prep
-override_dh_install dh_install
 dh_install
-dh_installdocs
-dh_installchangelogs
-dh_installdebconf
-dh_perl
-dh_link
-dh_strip_nondeterminism
-dh_compress
-dh_fixperms
-dh_missing
-dh_installdeb
-dh_gencontrol
-dh_md5sums
-dh_builddeb
