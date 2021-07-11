@@ -1,4 +1,4 @@
-composer (1.10.7) UNRELEASED; urgency=medium
+composer (2.1.3) UNRELEASED; urgency=medium
 
   [ root ]
   * LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
@@ -90,8 +90,399 @@ composer (1.10.7) UNRELEASED; urgency=medium
     long and shows more rarely
     * Fixed conflict rules like e.g. >=5 from matching dev-master, as it
     is not normalized to 9999999-dev internally anymore
+  *   * Fixed compatibility issue with git being configured to show
+    signatures by default
+    * Fixed discarding of local changes when updating packages to
+    include untracked files
+    * Several minor fixes
+  *   * Fixed compatibility issue with git being configured to show
+    signatures by default
+    * Fixed discarding of local changes when updating packages to
+    include untracked files
+    * Several minor fixes
+  *   * Fixed Bitbucket redirect loop when credentials are outdated
+    * Fixed GitLab auth prompt wording
+    * Fixed `self-update` handling of files requiring admin permissions
+    to write to on Windows (it now does a UAC prompt)
+    * Fixed parsing issues in funding.yml files
+  *   * Fixed Bitbucket redirect loop when credentials are outdated
+    * Fixed GitLab auth prompt wording
+    * Fixed `self-update` handling of files requiring admin permissions
+    to write to on Windows (it now does a UAC prompt)
+    * Fixed parsing issues in funding.yml files
+  *   * Fixed `create-project` not triggering events while installing
+    the root package
+    * Fixed PHP 8 compatibility issue
+    * Fixed `self-update` to avoid automatically upgrading to the next
+    major version once it becomes stable
+  *   * Fixed `create-project` not triggering events while installing
+    the root package
+    * Fixed PHP 8 compatibility issue
+    * Fixed `self-update` to avoid automatically upgrading to the next
+    major version once it becomes stable
+  *   * Breaking: This is a major release and while we tried to keep
+    things compatible for most users, you might want to have a look at
+    the [UPGRADE](UPGRADE-2.0.md) guides
+    * Many CPU and memory performance improvements
+    * The update command is now much more deterministic as it does not
+    take the already installed packages into account
+    * Package installation now performs all network operations first
+    before doing any changes on disk, to reduce the chances of ending up
+    with a partially updated vendor dir
+    * Partial updates and require/remove are now much faster as they
+    only load the metadata required for the updated packages
+    * Added a [platform-check step](doc/07-runtime.md#platform-check)
+    when vendor/autoload.php gets initialized which checks the current
+    PHP version/extensions match what is expected and fails hard
+    otherwise. Can be disabled with the platform-check config option
+    * Added a [`Composer\InstalledVersions`](doc/07-runtime.md#installed-
+    versions) class which is autoloaded in every project and lets you
+    check which packages/versions are present at runtime
+    * Added a `composer-runtime-api` virtual package which you can
+    require (as e.g. `^2.0`) to ensure things like the InstalledVersions
+    class above are present. It will effectively force people to use
+    Composer 2.x to install your project
+    * Added support for parallel downloads of package metadata and zip
+    files, this requires that the curl extension is present and we thus
+    strongly recommend enabling curl
+    * Added parallel installation of packages (requires OSX/Linux/WSL,
+    and that `unzip` is present in PATH)
+    * Added much clearer dependency resolution error reporting for
+    common error cases
+    * Added support for updating to a specific version with partial
+    updates, as well as a [--with flag](doc/03-cli.md#update--u) to pass
+    in temporary constraint overrides
+    * Added automatic removal of packages which are not required anymore
+    whenever an update is done, this will purge packages previously left
+    over by partial updates and `require`/`remove`
+    * Added support for TTY mode on Linux/OSX/WSL so that script
+    handlers now run in interactive mode
+    * Added `only`, `exclude` and `canonical` options to all
+    repositories, see [repository
+    priorities](https://getcomposer.org/repoprio) for details
+    * Added support for many new lib-* packages in the platform
+    repository and improved version detection for some ext-* and lib-*
+    packages
+    * Added `pre-operations-exec` event to be fired before the packages
+    get installed/upgraded/removed
+    * Added `pre-pool-create` event to be fired before the package pool
+    for the dependency solver is created, which lets you modify the list
+    of packages going in
+    * Added `post-file-download` event to be fired after package dist
+    files are downloaded, which lets you do additional checks on the
+    files
+    * Added --locked flag to `show` command to see the packages from the
+    composer.lock file
+    * Added --unused flag to `remove` command to make sure any packages
+    which are not needed anymore get removed
+    * Added --dry-run flag to `require` and `remove` commands
+    * Added --no-install flag to `update`, `require` and `remove`
+    commands to disable the install step and only do the update step
+    (composer.lock file update)
+    * Added an `--ask` flag to `create-project` command to make Composer
+    prompt for the install dir name, [useful for project install
+    instructions](https://github.com/composer/composer/pull/9181)
+    * Added support for multiple --repository flags being passed into
+    the `create-project` command, only useful in combination with `--add-
+    repository` to persist them to composer.json
+    * Added --with-dependencies and --with-all-dependencies flag aliases
+    to `require` and `remove` commands for consistency with `update`
+    * Added shorthand aliases `-w` for `--with-dependencies` and `-W`
+    for `--with-all-dependencies` on `update`/`require`/`remove`
+    commands
+    * Added more info to `vendor/composer/installed.json`, a dev key
+    stores whether dev requirements were installed, and every package
+    now has an install-path key with its install location
+    * Added COMPOSER_DISABLE_NETWORK which if set makes Composer do its
+    best to run offline. This can be useful when you have poor
+    connectivity or to do benchmarking without network jitter
+    * Added `COMPOSER_DEBUG_EVENTS=1` env var support for plugin authors
+    to figure out which events are triggered when
+    * Added `setCustomCacheKey` to `PreFileDownloadEvent` and fixed a
+    cache bug for integrations changing the processed url of package
+    archives
+    * Added `Composer\Util\SyncHelper` for plugin authors to deal with
+    async Promises more easily
+    * Added `$composer->getLoop()->getHttpDownloader()` to get access to
+    the main HttpDownloader instance in plugins
+    * Added --json and --merge flags to `config` command to allow
+    editing complex `extra.*` values by using json as input
+    * Added confirmation prompt when running Composer as superuser in
+    interactive mode
+    * Added --no-check-version to `validate` command to remove the
+    warning in case the version is defined
+    * Added --ignore-platform-req (without s) to all commands supporting
+    --ignore-platform-reqs, which accepts a package name so you can
+    ignore only specific platform requirements
+    * Added --no-dev support to `show` and `outdated` commands to skip
+    dev requirements
+    * Added --format=summary flag to `license` command
+    * Added a `cache-read-only` config option to make the cache usable
+    in read only mode for containers and such
+    * Added support for wildcards (`*`) in classmap autoloader paths
+    * Added support for configuring GitLab deploy tokens in addition to
+    private tokens, see [gitlab-token](doc/06-config.md#gitlab-token)
+    * Added support for package version guessing for require and init
+    command to take all platform packages into account, not just php
+    version
+    * Added support for tar in artifact repositories
+    * Added a non-zero exit code (2) and warning to `remove` command
+    when a package to be removed could not be removed
+    * Added `--apcu-autoloader-prefix` (or `--apcu-prefix` for `dump-
+    autoload` command) flag to let people use apcu autoloading in a
+    deterministic output way if that is needed
+    * Fixed package ordering when autoloading and especially when
+    loading plugins, to make sure dependencies are loaded before their
+    dependents
+    * Fixed suggest output being very spammy, it now is only one line
+    long and shows more rarely
+    * Fixed conflict rules like e.g. >=5 from matching dev-master, as it
+    is not normalized to 9999999-dev internally anymore
+    * Fixed solver bug resulting in endless loops in some cases
+    * Lots of minor bug fixes and improvements
+  *   * Breaking: This is a major release and while we tried to keep
+    things compatible for most users, you might want to have a look at
+    the [UPGRADE](UPGRADE-2.0.md) guides
+    * Many CPU and memory performance improvements
+    * The update command is now much more deterministic as it does not
+    take the already installed packages into account
+    * Package installation now performs all network operations first
+    before doing any changes on disk, to reduce the chances of ending up
+    with a partially updated vendor dir
+    * Partial updates and require/remove are now much faster as they
+    only load the metadata required for the updated packages
+    * Added a [platform-check step](doc/07-runtime.md#platform-check)
+    when vendor/autoload.php gets initialized which checks the current
+    PHP version/extensions match what is expected and fails hard
+    otherwise. Can be disabled with the platform-check config option
+    * Added a [`Composer\InstalledVersions`](doc/07-runtime.md#installed-
+    versions) class which is autoloaded in every project and lets you
+    check which packages/versions are present at runtime
+    * Added a `composer-runtime-api` virtual package which you can
+    require (as e.g. `^2.0`) to ensure things like the InstalledVersions
+    class above are present. It will effectively force people to use
+    Composer 2.x to install your project
+    * Added support for parallel downloads of package metadata and zip
+    files, this requires that the curl extension is present and we thus
+    strongly recommend enabling curl
+    * Added parallel installation of packages (requires OSX/Linux/WSL,
+    and that `unzip` is present in PATH)
+    * Added much clearer dependency resolution error reporting for
+    common error cases
+    * Added support for updating to a specific version with partial
+    updates, as well as a [--with flag](doc/03-cli.md#update--u) to pass
+    in temporary constraint overrides
+    * Added automatic removal of packages which are not required anymore
+    whenever an update is done, this will purge packages previously left
+    over by partial updates and `require`/`remove`
+    * Added support for TTY mode on Linux/OSX/WSL so that script
+    handlers now run in interactive mode
+    * Added `only`, `exclude` and `canonical` options to all
+    repositories, see [repository
+    priorities](https://getcomposer.org/repoprio) for details
+    * Added support for many new lib-* packages in the platform
+    repository and improved version detection for some ext-* and lib-*
+    packages
+    * Added `pre-operations-exec` event to be fired before the packages
+    get installed/upgraded/removed
+    * Added `pre-pool-create` event to be fired before the package pool
+    for the dependency solver is created, which lets you modify the list
+    of packages going in
+    * Added `post-file-download` event to be fired after package dist
+    files are downloaded, which lets you do additional checks on the
+    files
+    * Added --locked flag to `show` command to see the packages from the
+    composer.lock file
+    * Added --unused flag to `remove` command to make sure any packages
+    which are not needed anymore get removed
+    * Added --dry-run flag to `require` and `remove` commands
+    * Added --no-install flag to `update`, `require` and `remove`
+    commands to disable the install step and only do the update step
+    (composer.lock file update)
+    * Added an `--ask` flag to `create-project` command to make Composer
+    prompt for the install dir name, [useful for project install
+    instructions](https://github.com/composer/composer/pull/9181)
+    * Added support for multiple --repository flags being passed into
+    the `create-project` command, only useful in combination with `--add-
+    repository` to persist them to composer.json
+    * Added --with-dependencies and --with-all-dependencies flag aliases
+    to `require` and `remove` commands for consistency with `update`
+    * Added shorthand aliases `-w` for `--with-dependencies` and `-W`
+    for `--with-all-dependencies` on `update`/`require`/`remove`
+    commands
+    * Added more info to `vendor/composer/installed.json`, a dev key
+    stores whether dev requirements were installed, and every package
+    now has an install-path key with its install location
+    * Added COMPOSER_DISABLE_NETWORK which if set makes Composer do its
+    best to run offline. This can be useful when you have poor
+    connectivity or to do benchmarking without network jitter
+    * Added `COMPOSER_DEBUG_EVENTS=1` env var support for plugin authors
+    to figure out which events are triggered when
+    * Added `setCustomCacheKey` to `PreFileDownloadEvent` and fixed a
+    cache bug for integrations changing the processed url of package
+    archives
+    * Added `Composer\Util\SyncHelper` for plugin authors to deal with
+    async Promises more easily
+    * Added `$composer->getLoop()->getHttpDownloader()` to get access to
+    the main HttpDownloader instance in plugins
+    * Added --json and --merge flags to `config` command to allow
+    editing complex `extra.*` values by using json as input
+    * Added confirmation prompt when running Composer as superuser in
+    interactive mode
+    * Added --no-check-version to `validate` command to remove the
+    warning in case the version is defined
+    * Added --ignore-platform-req (without s) to all commands supporting
+    --ignore-platform-reqs, which accepts a package name so you can
+    ignore only specific platform requirements
+    * Added --no-dev support to `show` and `outdated` commands to skip
+    dev requirements
+    * Added --format=summary flag to `license` command
+    * Added a `cache-read-only` config option to make the cache usable
+    in read only mode for containers and such
+    * Added support for wildcards (`*`) in classmap autoloader paths
+    * Added support for configuring GitLab deploy tokens in addition to
+    private tokens, see [gitlab-token](doc/06-config.md#gitlab-token)
+    * Added support for package version guessing for require and init
+    command to take all platform packages into account, not just php
+    version
+    * Added support for tar in artifact repositories
+    * Added a non-zero exit code (2) and warning to `remove` command
+    when a package to be removed could not be removed
+    * Added `--apcu-autoloader-prefix` (or `--apcu-prefix` for `dump-
+    autoload` command) flag to let people use apcu autoloading in a
+    deterministic output way if that is needed
+    * Fixed package ordering when autoloading and especially when
+    loading plugins, to make sure dependencies are loaded before their
+    dependents
+    * Fixed suggest output being very spammy, it now is only one line
+    long and shows more rarely
+    * Fixed conflict rules like e.g. >=5 from matching dev-master, as it
+    is not normalized to 9999999-dev internally anymore
+    * Fixed solver bug resulting in endless loops in some cases
+    * Lots of minor bug fixes and improvements
+  *   * Disabled platform-check verification of extensions by default
+    (now defaulting `php-only`), set platform-check to `true` if you
+    want a complete check
+    * Improved platform-check handling of issue reporting
+    * Fixed platform-check to only check non-dev requires even if
+    require-dev dependencies are installed
+    * Fixed issues dealing with custom installers which return trailing
+    slashes in getInstallPath (ideally avoid doing this as there might
+    be other issues left)
+    * Fixed issues when curl functions are disabled
+    * Fixed gitlab-domains/github-domains to make sure if they are
+    overridden the default value remains present
+    * Fixed issues removing/upgrading packages from path repositories on
+    Windows
+    * Fixed regression in 2.0.4 when handling of git@bitbucket.org URLs
+    in vcs repositories
+    * Fixed issue running create-project in current directory on Windows
+  *   * Fixed detection of TTY mode, made input non-interactive
+    automatically if STDIN is not a TTY
+    * Fixed root aliases not being present in lock file if not required
+    by anything else
+    * Fixed `remove` command requiring a lock file to be present
+    * Fixed `Composer\InstalledVersions` to always contain up to date
+    data during installation
+    * Fixed `status` command breaking on slow networks
+    * Fixed order of POST_PACKAGE_* events to occur together once all
+    installations of a package batch are done
+  *   * Fixed regression on PHP 8.0
+  *   * Fixed regression on PHP 8.0
+  *   * Added warning if the curl extension is not enabled as it
+    significantly degrades performance
+    * Fixed InstalledVersions to report all packages when several vendor
+    dirs are present in the same runtime
+    * Fixed download speed when downloading large files
+    * Fixed `archive` and path repo copies mishandling some .gitignore
+    paths
+    * Fixed root package classes not being available to the
+    plugins/scripts during the initial install
+    * Fixed cache writes to be atomic and better support multiple
+    Composer processes running in parallel
+    * Fixed preg jit issues when `config` or `require` modifies large
+    composer.json files
+    * Fixed compatibility with envs having open_basedir restrictions
+    * Fixed exclude-from-classmap causing regex issues when having too
+    many paths
+    * Fixed compatibility issue with Symfony 4/5
+    * Several small performance and debug output improvements
+  *   * Reverted "Fixed runtime autoloader registration (for plugins and
+    script handlers) to prefer the project dependencies over the bundled
+    Composer ones" as it caused more problems than expected
+  *   * Security: Fixed command injection vulnerability in
+    HgDriver/HgDownloader and hardened other VCS drivers and downloaders
+    (GHSA-h5h8-pc6h-jvvx / CVE-2021-29472)
+    * Fixed install step at the end of the init command to take new
+    dependencies into account correctly
+    * Fixed `update --lock` listing updates which were not really
+    happening (#9812)
+    * Fixed support for --no-dev combined with --locked in outdated and
+    show commands (#9788)
+  *   * Security: Fixed command injection vulnerability in
+    HgDriver/HgDownloader and hardened other VCS drivers and downloaders
+    (GHSA-h5h8-pc6h-jvvx / CVE-2021-29472)
+    * Fixed install step at the end of the init command to take new
+    dependencies into account correctly
+    * Fixed `update --lock` listing updates which were not really
+    happening (#9812)
+    * Fixed support for --no-dev combined with --locked in outdated and
+    show commands (#9788)
+  *   * Updated composer/xdebug-handler to 2.0 which adds supports for
+    Xdebug 3
+    * Fixed handling of inline-update-constraints with references or
+    stability flags (#9847)
+    * Fixed async processes erroring in an unclear way when they failed
+    to start (#9808)
+    * Fixed support for the upcoming Symfony 6.0 release when Composer
+    is installed as a library (#9896)
+    * Fixed progress output missing newlines on PowerShell, and disable
+    progress output by default when CI env var is present (#9621)
+    * Fixed support for Vagrant/VirtualBox filesystem slowness when
+    installing binaries from packages (#9627)
+    * Fixed type annotations for the InstalledVersions class
+    * Deprecated InstalledVersions::getRawData in favor of
+    InstalledVersions::getAllRawData (#9816)
+  *   * Updated composer/xdebug-handler to 2.0 which adds supports for
+    Xdebug 3
+    * Fixed handling of inline-update-constraints with references or
+    stability flags (#9847)
+    * Fixed async processes erroring in an unclear way when they failed
+    to start (#9808)
+    * Fixed support for the upcoming Symfony 6.0 release when Composer
+    is installed as a library (#9896)
+    * Fixed progress output missing newlines on PowerShell, and disable
+    progress output by default when CI env var is present (#9621)
+    * Fixed support for Vagrant/VirtualBox filesystem slowness when
+    installing binaries from packages (#9627)
+    * Fixed type annotations for the InstalledVersions class
+    * Deprecated InstalledVersions::getRawData in favor of
+    InstalledVersions::getAllRawData (#9816)
+  *   * Add "symlink" option for "bin-compat" config to force symlinking
+    even on WSL/Windows (#9959)
+    * Fixed source binaries not being made executable when symlinks
+    cannot be used (#9961)
+    * Fixed more deletion edge cases (#9955, #9956)
+    * Fixed `dump-autoload` command not dispatching scripts anymore,
+    regressed in 2.1.2 (#9954)
+  *   * Add "symlink" option for "bin-compat" config to force symlinking
+    even on WSL/Windows (#9959)
+    * Fixed source binaries not being made executable when symlinks
+    cannot be used (#9961)
+    * Fixed more deletion edge cases (#9955, #9956)
+    * Fixed `dump-autoload` command not dispatching scripts anymore,
+    regressed in 2.1.2 (#9954)
+  *   * Add "symlink" option for "bin-compat" config to force symlinking
+    even on WSL/Windows (#9959)
+    * Fixed source binaries not being made executable when symlinks
+    cannot be used (#9961)
+    * Fixed more deletion edge cases (#9955, #9956)
+    * Fixed `dump-autoload` command not dispatching scripts anymore,
+    regressed in 2.1.2 (#9954)
 
- -- root <root@exiv.jinonice.czf>  Mon, 08 Jun 2020 17:37:56 +0200
+  [ Vitex ]
+
+ -- root <root@exiv.jinonice.czf>  Sun, 27 Jun 2021 17:35:19 +0200
 
 composer (1.0) EXPERIMENTAL; urgency=medium
 

@@ -5,12 +5,11 @@
 
 override_dh_prep:
 	debian/downloader
-	dch -b -v `./composer --version | awk '{print $$3}'` --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
 	dh_prep
 
 override_dh_install:
 	rm -rf tmp
-	git clone https://github.com/composer/composer.git tmp
+	git clone --depth=1 https://github.com/composer/composer.git tmp
 	cd tmp ; git checkout tags/`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'` ; cd ..
 	mkdir -p debian/composer/usr/share/php/
 	mv tmp/src/Composer debian/composer/usr/share/php/
