@@ -9,6 +9,7 @@ pipeline {
     options {
         ansiColor('xterm')
         copyArtifactPermission('*');
+	//disableConcurrentBuilds()
     }
 
     environment {
@@ -19,15 +20,15 @@ pipeline {
     
     stages {
 
-        stage('debian-stable') {
+        stage('debian-buster') {
             agent {
-                docker { image 'vitexsoftware/debian:stable' }
+                docker { image 'vitexsoftware/debian:oldstable' }
             }
             steps {
                 dir('build/debian/package') {
                     checkout scm
-		            buildPackage()
-		            installPackages()
+	            buildPackage()
+	            installPackages()
                 }
                 stash includes: 'dist/**', name: 'dist-buster'
             }
@@ -37,22 +38,39 @@ pipeline {
                     copyArtifact()
                 }
             }
-
-
-            
         }
 
-        stage('debian-testing') {
+        stage('debian-bullseye') {
+            agent {
+                docker { image 'vitexsoftware/debian:stable' }
+            }
+            steps {
+                dir('build/debian/package') {
+                    checkout scm
+	            buildPackage()
+	            installPackages()
+                }
+                stash includes: 'dist/**', name: 'dist-bullseye'
+            }
+            post {
+                success {
+                    archiveArtifacts 'dist/debian/'
+                    copyArtifact()
+                }
+            }
+        }
+
+        stage('debian-bookworm') {
             agent {
                 docker { image 'vitexsoftware/debian:testing' }
             }
             steps {
                 dir('build/debian/package') {
                     checkout scm
-		            buildPackage()
-		            installPackages()
+	            buildPackage()
+	            installPackages()
                 }
-                stash includes: 'dist/**', name: 'dist-bullseye'
+                stash includes: 'dist/**', name: 'dist-bookworm'
             }
             post {
                 success {
@@ -69,8 +87,8 @@ pipeline {
             steps {
                 dir('build/debian/package') {
                     checkout scm
-		            buildPackage()
-		            installPackages()
+	            buildPackage()
+	            installPackages()
                 }
                 stash includes: 'dist/**', name: 'dist-focal'
             }
@@ -89,8 +107,8 @@ pipeline {
             steps {
                 dir('build/debian/package') {
                     checkout scm
-		            buildPackage()
-		            installPackages()
+	            buildPackage()
+	            installPackages()
                 }
                 stash includes: 'dist/**', name: 'dist-hirsute'
             }
@@ -134,7 +152,7 @@ def buildPackage() {
     ).trim()
 
     def VERSION = sh (
-	script: 'curl --silent "https://api.github.com/repos/composer/composer/releases/latest" | jq -r .tag_name',
+	script: 'dpkg-parsechangelog --show-field Version',
         returnStdout: true
     ).trim()
 
@@ -154,14 +172,17 @@ def buildPackage() {
 //	    pristineTarName: ''
     sh 'dch -b -v ' + VER  + ' "' + env.BUILD_TAG  + '"'
     sh 'sudo apt-get update'
+    sh 'debian/downloader'
+    sh 'debian/setver'
     sh 'debuild-pbuilder  -i -us -uc -b'
-    sh 'mkdir -p $WORKSPACE/dist/debian/ ; rm -rf $WORKSPACE/dist/debian/* ; mv ../' + SOURCE + '*_' + VER + '_*.deb ../' + SOURCE + '*_' + VER + '_*.changes ../' + SOURCE + '*_' + VER + '_*.build $WORKSPACE/dist/debian/'
+    sh 'mkdir -p $WORKSPACE/dist/debian/ ; rm -rf $WORKSPACE/dist/debian/* ; for deb in $(cat debian/files | awk \'{print $1}\'); do mv "../$deb" $WORKSPACE/dist/debian/; done'
 }
 
 def installPackages() {
+    def DEBCONF_DEBUG=0 //Set to "5" or "developer" to debug debconf
     sh 'cd $WORKSPACE/dist/debian/ ; dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz; cd $WORKSPACE'
-    sh 'echo "deb [trusted=yes] file:///$WORKSPACE/dist/debian/ ./" | sudo tee /etc/apt/sources.list.d/local.list'
+    sh 'echo "deb [trusted=yes] file:////$WORKSPACE/dist/debian/ ./" | sudo tee /etc/apt/sources.list.d/local.list'
     sh 'sudo apt-get update'
     sh 'echo "${GREEN} INSTALATION ${ENDCOLOR}"'
-    sh 'IFS="\n\b"; for package in  `ls $WORKSPACE/dist/debian/ | grep .deb | awk -F_ \'{print \$1}\'` ; do  echo -e "${GREEN} installing ${package} on `lsb_release -sc` ${ENDCOLOR} " ; sudo  DEBIAN_FRONTEND=noninteractive DEBCONF_DEBUG=developer apt-get -y install $package ; done;'
+    sh 'IFS="\n\b"; for package in  `ls $WORKSPACE/dist/debian/ | grep .deb | awk -F_ \'{print \$1}\'` ; do  echo -e "${GREEN} installing ${package} on `lsb_release -sc` ${ENDCOLOR} " ; sudo  DEBIAN_FRONTEND=noninteractive DEBCONF_DEBUG=' + DEBCONF_DEBUG  + ' apt-get -y install $package ; done;'
 }

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rm -f composer
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
@@ -14,7 +15,5 @@ fi
 php composer-setup.php --quiet --filename="composer"
 RESULT=$?
 rm composer-setup.php
-
-#dch -b -v `./composer --version | awk '{print $$3}'` --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
 
 exit $RESULT

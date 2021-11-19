@@ -1,0 +1,3 @@
+#!/bin/sh
+dch -b -v `./composer --version | awk '{print $3}'` --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
+
