@@ -1,3 +1,5 @@
 #!/bin/sh
-dch -b -v `./composer --version | awk '{print $3}'` --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
-
+version=`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`
+wget https://github.com/composer/composer/releases/download/${version}/composer.phar -o debian/tmp/composer
+chmod +x debian/tmp/composer
+dch -b -v ${version}  --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
