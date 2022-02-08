@@ -29,6 +29,7 @@ architectures.each {
             ansiColor('xterm') {
                 stage('Checkout ' + architecture + ' ' + distribution) {
                     checkout scm
+		    sh 'debian/setver'
                     buildImage = docker.image(vendor + '/' + distribution)
                     def VERSION = sh (
                         script: 'dpkg-parsechangelog --show-field Version',

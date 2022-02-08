@@ -9,8 +9,7 @@
 
 override_dh_install:
 	rm -rf tmp
-	git clone --depth=1 https://github.com/composer/composer.git tmp
-	cd tmp ; git checkout tags/`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'` ; cd ..
+	git clone --depth=1 -b `curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`  https://github.com/composer/composer.git tmp
 	mkdir -p debian/composer/usr/share/php/
 	mv tmp/src/Composer debian/composer/usr/share/php/
 	rm -rf tmp
