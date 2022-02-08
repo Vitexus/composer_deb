@@ -14,6 +14,6 @@ override_dh_install:
 	mv tmp/src/Composer debian/composer/usr/share/php/
 	rm -rf tmp
 	mkdir -p debian/tmp
-	wget https://github.com/composer/composer/releases/download/`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`/composer.phar -o debian/tmp/composer
+	wget https://github.com/composer/composer/releases/download/`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`/composer.phar -O debian/tmp/composer
 	chmod +x debian/tmp/composer
 	dh_install
