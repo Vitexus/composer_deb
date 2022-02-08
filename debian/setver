@@ -1,6 +1,2 @@
 #!/bin/sh
-version=`curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`
-mkdir -p debian/tmp
-wget https://github.com/composer/composer/releases/download/${version}/composer.phar -o debian/tmp/composer
-chmod +x debian/tmp/composer
-dch -b -v ${version}  --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
+dch -b -v `curl --silent "https://api.github.com/repos/composer/composer/tags" | jq -r '.[0].name'`  --package composer "`curl -s https://api.github.com/repos/composer/composer/releases/latest | jq -r '.body'|grep '*'`"
