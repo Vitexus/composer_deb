@@ -1,4 +1,4 @@
-composer (2.1.12) UNRELEASED; urgency=medium
+composer (2.2.6) UNRELEASED; urgency=medium
 
   [ root ]
   * LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
@@ -502,8 +502,21 @@ composer (2.1.12) UNRELEASED; urgency=medium
     * Fixed test suite compatibility with latest symfony/console
     releases (#10499)
     * Fixed some error reporting edge cases (#10484, #10451, #10493)
+  *   * BC Break: due to an oversight, the `COMPOSER_BIN_DIR` env var
+    for binaries added in Composer 2.2.2 had to be renamed to
+    `COMPOSER_RUNTIME_BIN_DIR` (#10512)
+    * Fixed enum parsing in classmap generation with syntax like `enum
+    foo:string` without space after `:` (#10498)
+    * Fixed package search not urlencoding the input (#10500)
+    * Fixed `reinstall` command not firing `pre-install-cmd`/`post-
+    install-cmd` events (#10514)
+    * Fixed edge case in path repositories where a symlink: true option
+    would be ignored on old Windows and old PHP combos (#10482)
+    * Fixed test suite compatibility with latest symfony/console
+    releases (#10499)
+    * Fixed some error reporting edge cases (#10484, #10451, #10493)
 
- -- vitex <info@vitexsoftware.cz>  Wed, 09 Feb 2022 00:00:57 +0100
+ -- vitex <info@vitexsoftware.cz>  Mon, 14 Feb 2022 22:35:38 +0100
 
 composer (1.0) EXPERIMENTAL; urgency=medium
 
