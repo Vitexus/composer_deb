@@ -18,6 +18,7 @@ node() {
     ansiColor('xterm') {
         stage('SCM Checkout') {
             checkout scm
+            sh 'debian/setver'
             def control = readFile( file:  env.WORKSPACE + "/debian/control")
             def lines = control.readLines() 
             for(line in lines) {
