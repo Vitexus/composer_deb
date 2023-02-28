@@ -1,4 +1,4 @@
-composer (2.2.6) UNRELEASED; urgency=medium
+composer (2.5.4) UNRELEASED; urgency=medium
 
   [ root ]
   * LICENSE README.md build.sh composer debian Fixed 1.10.2 regression
@@ -515,8 +515,10 @@ composer (2.2.6) UNRELEASED; urgency=medium
     * Fixed test suite compatibility with latest symfony/console
     releases (#10499)
     * Fixed some error reporting edge cases (#10484, #10451, #10493)
+  *   * Fixed extra.plugin-optional support in PluginInstaller when
+    doing pre-install checks (#11318)
 
- -- vitex <info@vitexsoftware.cz>  Mon, 14 Feb 2022 22:35:38 +0100
+ -- vitex <info@vitexsoftware.cz>  Tue, 28 Feb 2023 11:29:14 +0100
 
 composer (1.0) EXPERIMENTAL; urgency=medium
 
