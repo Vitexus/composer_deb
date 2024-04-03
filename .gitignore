@@ -3,3 +3,8 @@ debian/.debhelper/
 debian/composer/
 tmp/
 
+/debian/composer.debhelper.log
+/debian/composer.postrm.debhelper
+/debian/composer.substvars
+/debian/debhelper-build-stamp
+/debian/files
